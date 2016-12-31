@@ -1,0 +1,6 @@
+/**
+	
+
+**/
+
+writeOut("", document.getElementById("myTypingText"));
