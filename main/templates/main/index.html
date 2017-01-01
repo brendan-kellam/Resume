@@ -1,61 +1,81 @@
-<head>
-
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-
-	<title>B.K</title>
-
-
-	<!-- load all django static files -->
-	{% load staticfiles %}
-
-	<!-- load Bootstrap CSS -->
-	<link href="{% static "css/bootstrap-theme.min.css" %}" rel="stylesheet">
-	<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-
-	<!-- load animate.css -->
-	<link href="{% static "css/animate.min.css" %}" rel="stylesheet">
-
-	<style type="text/css">
-		#myTypingText {
-			padding-left: 10px;
-			color: #00FF00;
-			font-family: Arial, Helvetica, sans-serif;
-			font-size: 12px;
-		}
-	</style>
+<html>
+<!--
+	Hi there.
+	My name is Brendan Kellam, a software engineering student at
+	McGill University in Montreal, Canada
+-->
 
 
-</head>
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>B.K</title>
 
 
-<body style="background-color:#000">
+		<!-- load all django static files -->
+		{% load staticfiles %}
+
+		<!-- load Bootstrap CSS -->
+		<link href="{% static "css/bootstrap-theme.min.css" %}" rel="stylesheet">
+		<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+
+		<!-- load animate.css -->
+		<link href="{% static "css/animate.min.css" %}" rel="stylesheet">
+
+		<!-- load index.css -->
+		<link href="{% static "css/index.css" %}" rel="stylesheet">
+
+		<style type="text/css">
+			#myTypingText {
+				color: #00FF00;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 12px;
+			}
+
+		</style>
 
 
-	<div id="myTypingText">
-
-	</div>
+	</head>
 
 
-</body>
+	<body>
+		
+		<div class="container">
 
-<!-- LOAD ALL JAVASCRIPT RESOURCES -->
+			<div class="">
 
-<!-- jQuery -->
-<script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+				<div id="myTypingText" style="overflow-y: auto; overflow: hidden; max-height: 100%;"></div>
 
-<!-- npm -->
-<script type="text/javascript" src="{% static "js/npm.js" %}"></script>
+			</div>
 
-<!-- typed -->
-<script type="text/javascript" src="{% static "js/typed.js" %}"></script>
+		</div>
 
-<!-- parser -->
-<script type="text/javascript" src="{% static "js/parser.js" %}"></script>
+		<footer class="footer">
+			<a class="text-muted" href="#">Skip animation</a>
+		</footer>
 
-<!-- index -->
-<script type="text/javascript" src="{% static "js/index.js" %}"></script>
+	</body>
 
-<!-- Bootstrap Core JavaScript -->
-<script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+	<!-- LOAD ALL JAVASCRIPT RESOURCES -->
+
+	<!-- jQuery -->
+	<script type="text/javascript" src="{% static "js/jquery.js" %}"></script>
+
+	<!-- npm -->
+	<script type="text/javascript" src="{% static "js/npm.js" %}"></script>
+
+	<!-- typed -->
+	<script type="text/javascript" src="{% static "js/typed.js" %}"></script>
+
+	<!-- parser -->
+	<script type="text/javascript" src="{% static "js/parser.js" %}"></script>
+
+	<!-- index -->
+	<script type="text/javascript" src="{% static "js/index.js" %}"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script type="text/javascript" src="{% static "js/bootstrap.min.js" %}"></script>
+</html>
