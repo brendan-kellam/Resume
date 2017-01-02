@@ -16,29 +16,6 @@ function getFileContents(file, callback) {
 	});
 }
 
-/*
-function getFileContents(file, callback) {
-
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-
-		if (this.readyState == 4 && this.status == 200) {
-			
-			// on ready
-			callback.apply(this, [this.responseText]);
-		}
-	};
-  	
-  	xhttp.open("GET", file, true);
-  	xhttp.send();
-}
-
-*/
-
-
-
-
-
 
 var speed = 50;
 var count = 0;
@@ -54,9 +31,8 @@ function frameLooper(array, element) {
 		switch(temp) {
 
 			case "^": // On new line
-				
-				if (++count > 5)
-					element.style.paddingLeft = "50px";
+				//if (++count > 5)
+					//element.style.paddingLeft = "50px";
 
 				element.innerHTML += "<br>";
 				break;
