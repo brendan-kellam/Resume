@@ -1,14 +1,17 @@
+/*
+	index css source
+*/
+
 html {
 	position: relative;
 	min-height: 100%;
 }
 
 body {
-	/* Margin bottom by footer height */
-	margin-bottom: 60px;
 	background-color: #000;
+	/* Margin bottom by footer height */
+	margin-bottom: 20px;
 }
-
 
 .footer {
 	position: absolute;
@@ -19,9 +22,20 @@ body {
 
 .container {
 	width: auto;
-	max-width: 680px;
 	padding: 0 15px;
 }
+
 .container .text-muted {
 	margin: 20px 0;
+}
+
+
+/* auto type class */
+.auto-type {
+	color: #00FF00;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	overflow-y: auto;
+	overflow: hidden;
+	max-height: 100%;
 }

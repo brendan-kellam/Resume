@@ -16,8 +16,32 @@ function getFileContents(file, callback) {
 	});
 }
 
+/*
+function getFileContents(file, callback) {
 
-var speed = 1;
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+
+		if (this.readyState == 4 && this.status == 200) {
+			
+			// on ready
+			callback.apply(this, [this.responseText]);
+		}
+	};
+  	
+  	xhttp.open("GET", file, true);
+  	xhttp.send();
+}
+
+*/
+
+
+
+
+
+
+var speed = 50;
+var count = 0;
 function frameLooper(array, element) {
 
  	var timer;
@@ -28,7 +52,12 @@ function frameLooper(array, element) {
 		temp = array.shift();
 
 		switch(temp) {
-			case "^":
+
+			case "^": // On new line
+				
+				if (++count > 5)
+					element.style.paddingLeft = "50px";
+
 				element.innerHTML += "<br>";
 				break;
 			case "~":
@@ -39,6 +68,7 @@ function frameLooper(array, element) {
 		}
 
 	}else{
+
 		clearTimeout(timer);
 		//console.log("here");
 		//return;
@@ -49,7 +79,6 @@ function frameLooper(array, element) {
 	//timer = setTimeout(frameLooper.bind(null, array, element), 1);
 
 }
-
 
 /* formatStr: accepts raw string and converts to a "screen-drawable" format */
 function formatStr(str){
