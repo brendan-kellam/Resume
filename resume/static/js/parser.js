@@ -18,7 +18,7 @@ function getFileContents(file, callback) {
 
 
 var speed = 50;
-var count = 0;
+var count = 0; 
 function frameLooper(array, element) {
 
  	var timer;
