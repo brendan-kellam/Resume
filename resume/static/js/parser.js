@@ -5,10 +5,17 @@ var space = '~';
 var speedSet = '≈';
 var wait = '˚';
 
+var htmlStart = 'ƒ';
+var htmlEnd = 'ß';
+
 // init default auto-scroll speed
 var speed = 50;
 var cachedSpeeds = [];
 var cachedSpeedsIndex = 0;
+
+var cachedHtmlLines = [];
+var cachedHtmlIndex = 0;
+var interpretHTML = 0;
 
 
 /* getFileContents: Handles reading from local resources */
@@ -43,6 +50,7 @@ function frameLooper(array, element) {
 			case "^": // On new line
 				//if (++count > 5)
 				//element.style.paddingLeft = "50px";
+
 				element.innerHTML += "<br>";
 				break;
 
@@ -98,6 +106,7 @@ function formatStr(str){
 		switch(c){
 			case '\n': // new-line
 				line += newline;
+				if (interpretHTML == 1) cachedHtmlLines.push(line);
 				output += line;
 				line = "";
 				break;
@@ -128,8 +137,17 @@ function formatStr(str){
 				i = index;
 				break;
 
+			case htmlStart:
+				interpretHTML = 1;
+				break;
+
+			case htmlEnd:
+				interpretHTML = 0;
+				break;
+
 			default: // default behavior
 				line += c;
+				
 		}
 
 	}
