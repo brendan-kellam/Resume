@@ -1,21 +1,43 @@
 
-// init parser triggers
-var newline = '^';
-var space = '~';
-var speedSet = '≈';
-var wait = '˚';
+// define the parser's triggers
+var PTrigger = {
+	nline : '^',
+	space : '~',
+	speed : '≈',
+	wait : '˚',
+	htmlS : 'ƒ',
+	htmlE : 'ß',
+};
 
-var htmlStart = 'ƒ';
-var htmlEnd = 'ß';
+// init parser triggers
+var newlineChar = '^';
+var spaceChar = '~';
+var speedSetChar = '≈';
+var waitChar = '˚';
+var interpretHTMLStartChar = 'ƒ';
+var interpretHTMLEndChar = 'ß';
+
 
 // init default auto-scroll speed
 var speed = 50;
-var cachedSpeeds = [];
-var cachedSpeedsIndex = 0;
+
 
 var cachedHtmlLines = [];
 var cachedHtmlIndex = 0;
 var interpretHTML = 0;
+
+
+var buffer = [];
+var index = 0;
+
+function push(obj){
+	buffer.push(obj);
+}
+
+function pop(){
+	return buffer.shift();
+}
+
 
 
 /* getFileContents: Handles reading from local resources */
@@ -47,23 +69,20 @@ function frameLooper(array, element) {
 
 		switch(temp) {
 
-			case "^": // On new line
-				//if (++count > 5)
-				//element.style.paddingLeft = "50px";
-
+			case newlineChar: // On new line
 				element.innerHTML += "<br>";
 				break;
 
-			case "~":
+			case spaceChar:
 				element.innerHTML += "&nbsp";
 				break;
 
-			case "≈":
-				speed = cachedSpeeds[cachedSpeedsIndex++];
+			case speedSetChar:
+				speed = buffer[index++];
 				break;
 
-			case "˚":
-				timer = setTimeout(frameLooper.bind(null, array, element), cachedSpeeds[cachedSpeedsIndex++]);
+			case waitChar:
+				timer = setTimeout(frameLooper.bind(null, array, element), buffer[index++]);
 				return;
 
 			default:
@@ -83,15 +102,6 @@ function frameLooper(array, element) {
 
 }
 
-/* getTime: Gets the specified time in the auto-scroll txt files for the set time command ('≈') */
-function getTime(str, index){
-	var time = "", c = "";
-	while ((c = str[++index]) != '\n')
-		time += c;
-
-	// return the time and new index value
-	return [Number(time), index];
-}
 
 /* formatStr: accepts raw string and converts to a "screen-drawable" format */
 function formatStr(str){	
@@ -104,47 +114,42 @@ function formatStr(str){
 			
 		// switch-case on a given character
 		switch(c){
+
+			/* NEW LINES */
 			case '\n': // new-line
-				line += newline;
-				if (interpretHTML == 1) cachedHtmlLines.push(line);
+				line += PTrigger.nline;
 				output += line;
 				line = "";
 				break;
 
+			/* TAB */ 
 			case '\t': // tab
 				line += "~~~~~~~~"; // NOTE: A '~' character indicates a space
 				break;
 
-			case speedSet: // speed change
-				var get = getTime(str, i);
-				var time = get[0];
-				var index = get[1];
-
-				cachedSpeeds.push(time);
-				output += '≈';
-
-				i = index;
+			/* SPEED SET */
+			case PTrigger.speed:
+				i = pushInteger(str, i);
+				output += PTrigger.speed;
 				break;
 
-			case wait:
-				var get = getTime(str, i);
-				var time = get[0];
-				var index = get[1];
-
-				cachedSpeeds.push(time);
-				output += '˚';
-
-				i = index;
+			/* WAIT CHAR */
+			case PTrigger.wait:
+				i = pushInteger(str, i);
+				output += PTrigger.wait;
 				break;
 
-			case htmlStart:
+			/* INTERPRET HTML START */
+			case PTrigger.htmlS:
 				interpretHTML = 1;
 				break;
 
-			case htmlEnd:
+			/* INTERPRET HTML END */
+			case PTrigger.htmlE:
 				interpretHTML = 0;
 				break;
 
+			/* DEFAULT */
 			default: // default behavior
 				line += c;
 				
@@ -155,6 +160,21 @@ function formatStr(str){
 	// return formated string
 	return output;
 }
+
+
+/* pushInteger: pulls one-line integer from text file and pushes it to the buffer */
+function pushInteger(str, index){
+	var val = "", c = "";
+	while ((c = str[++index]) != '\n')
+		val += c;
+
+	// push the value 
+	push(Number(val));
+
+	// return the new index
+	return index;
+}
+
 
 
 function writeOut(file, element){
