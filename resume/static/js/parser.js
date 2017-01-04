@@ -5,18 +5,8 @@ var PTrigger = {
 	space : '~',
 	speed : '≈',
 	wait : '˚',
-	htmlS : 'ƒ',
-	htmlE : 'ß',
+	html : 'ƒ',
 };
-
-// init parser triggers
-var newlineChar = '^';
-var spaceChar = '~';
-var speedSetChar = '≈';
-var waitChar = '˚';
-var interpretHTMLStartChar = 'ƒ';
-var interpretHTMLEndChar = 'ß';
-
 
 // init default auto-scroll speed
 var speed = 50;
@@ -26,6 +16,7 @@ var cachedHtmlLines = [];
 var cachedHtmlIndex = 0;
 var interpretHTML = 0;
 
+var test = document.getElementById("test");
 
 var buffer = [];
 var index = 0;
@@ -35,7 +26,7 @@ function push(obj){
 }
 
 function pop(){
-	return buffer.shift();
+	return buffer[index++];
 }
 
 
@@ -69,20 +60,29 @@ function frameLooper(array, element) {
 
 		switch(temp) {
 
-			case newlineChar: // On new line
+			case PTrigger.nline: // On new line
 				element.innerHTML += "<br>";
+
 				break;
 
-			case spaceChar:
+			case PTrigger.html:
+				element.innerHTML += "<br>";
+				var t = pop();
+				console.log(t);
+				test.innerHTML += t; 
+
+				break;
+
+			case PTrigger.space:
 				element.innerHTML += "&nbsp";
 				break;
 
-			case speedSetChar:
-				speed = buffer[index++];
+			case PTrigger.speed:
+				speed = pop();
 				break;
 
-			case waitChar:
-				timer = setTimeout(frameLooper.bind(null, array, element), buffer[index++]);
+			case PTrigger.wait:
+				timer = setTimeout(frameLooper.bind(null, array, element), pop());
 				return;
 
 			default:
@@ -106,7 +106,7 @@ function frameLooper(array, element) {
 /* formatStr: accepts raw string and converts to a "screen-drawable" format */
 function formatStr(str){	
 
-	var output = "", line = "";
+	var output = "", line = "", htmlLine = "";
 
 	// loop each character of accepted string
 	for (var i = 0, len = str.length, c = ""; i < len; i++){
@@ -115,8 +115,25 @@ function formatStr(str){
 		// switch-case on a given character
 		switch(c){
 
+			case PTrigger.html:
+				interpretHTML = 1; // allow the program to interpret the html 
+				break;
+
 			/* NEW LINES */
 			case '\n': // new-line
+
+				if (interpretHTML) {
+					push(htmlLine);
+					htmlLine = "";
+					interpretHTML = 0;
+
+					line += PTrigger.html;
+					output += line;
+					line = "";
+					console.log("here");
+					break;
+				}
+
 				line += PTrigger.nline;
 				output += line;
 				line = "";
@@ -139,19 +156,13 @@ function formatStr(str){
 				output += PTrigger.wait;
 				break;
 
-			/* INTERPRET HTML START */
-			case PTrigger.htmlS:
-				interpretHTML = 1;
-				break;
-
-			/* INTERPRET HTML END */
-			case PTrigger.htmlE:
-				interpretHTML = 0;
-				break;
-
 			/* DEFAULT */
 			default: // default behavior
 				line += c;
+
+				if (interpretHTML)
+					htmlLine += c;
+				break;
 				
 		}
 

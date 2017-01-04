@@ -1,4 +1,9 @@
-≈40
+≈50
+
+
+	<h1>this is a test!</h1>ƒ
+	<p>This html is being dynamically interpreted in real time</p>ƒ
+
 /*
 If your a programmer, I hope you agree 
 with me when I say: code is awesome!
@@ -10,7 +15,7 @@ and ways to be creative.
 
 On the other hand, resumes...well...are kind of dull.  
 ˚200
-≈20
+≈2
 ¯\_(ツ)_/¯
 ≈40
 ˚500
@@ -36,6 +41,3 @@ engaging warp speed in..
 
 ≈60
 */
-
-ƒ
-<h1>this is a test!</h1>
