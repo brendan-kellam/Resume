@@ -6,6 +6,7 @@ var PTrigger = {
 	speed : '≈',
 	wait : '˚',
 	html : 'ƒ',
+	trigger : 't',
 };
 
 // init default auto-scroll speed
@@ -137,7 +138,7 @@ function formatStr(str){
 				line += PTrigger.nline;
 				output += line;
 				line = "";
-				break;
+				break; 
 
 			/* TAB */ 
 			case '\t': // tab
