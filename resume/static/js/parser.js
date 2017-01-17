@@ -30,7 +30,24 @@ function pop(){
 	return buffer[index++];
 }
 
+class Line {
 
+	this.str;
+	this.callback;
+
+	get string() {
+		return this.string;
+	}
+
+	get callback() {
+		return this.callback;
+	}
+
+	setCallback(cb){
+		this.callback cb;
+	}
+
+}
 
 /* getFileContents: Handles reading from local resources */
 function getFileContents(file, callback) {
@@ -99,8 +116,6 @@ function frameLooper(array, element) {
 
 	timer = setTimeout(frameLooper.bind(null, array, element), speed);
 
-	//timer = setTimeout(frameLooper.bind(null, array, element), 1);
-
 }
 
 
@@ -112,7 +127,7 @@ function formatStr(str){
 	// loop each character of accepted string
 	for (var i = 0, len = str.length, c = ""; i < len; i++){
 		c = str[i];
-			
+
 		// switch-case on a given character
 		switch(c){
 
@@ -168,10 +183,88 @@ function formatStr(str){
 		}
 
 	}
-
 	// return formated string
 	return output;
 }
+
+
+function formatStrTest(lines){
+
+	var len = lines.length;
+	var line = "";
+
+	for (var i = 0; i < len; i++){
+
+		line = lines[i];
+
+		console.log(line);
+
+		if (line.cont)
+
+	}
+
+}
+
+function setSpeed(str){
+
+}
+
+/* getLines: converts a string to a array of it's lines */
+function getLines(str){
+
+	// initialize variables
+	var c = "", s = "";
+	var len = str.length;
+	var lines = [];
+	var newLine = false;
+	var line;
+
+	// loop each character of string
+	for (var i = 0; i < len; i++){
+
+		// get character
+		c = str[i];
+
+		if (newLine) {
+			newLine = false;
+
+			// create new line object
+			line = new Line();
+
+			switch(c){
+
+				case PTrigger.speed:
+					line.setCallback(setSpeed);
+					break;
+
+				default:
+					break;
+			}
+
+
+		}
+
+		// handle tabbing
+		if (c != '\t') s += c;
+		else {
+			s += "~~~~~~~~";
+		}
+
+		// check for new line
+		if (c == '\n') {
+
+			// push line to lines array
+			lines.push(s);
+			s = "";
+			newLine = true;
+		}
+	}
+
+	// return lines array
+	return lines;
+}
+
+
 
 
 /* pushInteger: pulls one-line integer from text file and pushes it to the buffer */
@@ -192,7 +285,7 @@ function pushInteger(str, index){
 function writeOut(file, element){
 	
 	getFileContents(file, function(str) {
-		var output = formatStr(str);	
+		var output = formatStrTest(getLines(str));	
 	
 		frameLooper(output.split(""), element)		
 
