@@ -35,13 +35,7 @@ body {
 }
 
 #display-content {
-	float: left;
-	width: 100%;
-}
-
-#interpreted-content {
-	float: right; 
-	width: 100%;
+	color: #00FF00;	
 }
 
 

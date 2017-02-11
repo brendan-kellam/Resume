@@ -3,7 +3,6 @@ console.log("running...");
 var displayed = document.getElementById("display-content");
 var interpreted = document.getElementById("interpreted-content");
 
-
 var file = "/static/auto-scroll/test.html";
 
 var contents = "";
@@ -12,12 +11,19 @@ var index = 0;
 
 var timer;
 var line = "";
+var isInterpreted = true;
+var isDisplayed = false;
+
+// CSS related input
 var cssBuffer = "";
 var isCSS = false;
 
-var isInterpreted = true;
+// speed related input
+var setSpeed = false;
+
 function looper() {
 
+	// get current character
 	var c = contents[index];
 
 	switch (c) {
@@ -36,8 +42,15 @@ function looper() {
 			iterate();
 			return;
 
-		case '|':
+		case '~':
 			isInterpreted = false;
+			iterate();
+			return;
+
+		// speed set
+		case '≈':
+			setSpeed = true;
+			isDisplayed = false;
 			iterate();
 			return;
 
@@ -46,7 +59,7 @@ function looper() {
 	}
 
 
-	displayed.innerHTML += c;
+	if (isDisplayed) displayed.innerHTML += c;
 	line += c;
 
 	iterate();
@@ -54,45 +67,57 @@ function looper() {
 
 function interpret() {
 
-	console.log(line);
-
 	switch (line) {
 		case "<style>":
-			console.log("style START");
-			cssBuffer += line;
-			isCSS = true;
+			cssStart();
 			break;
 
 		case "</style>":
-			cssBuffer += line; 
-			console.log("style FIN");
-			interpreted.innerHTML += cssBuffer;
-
-			cssBuffer = "";
-			isCSS = false;
+			cssStop();
 			break;
 
 		default:
-			if (isCSS) {
+			if (isCSS) 
 				cssBuffer += line;
-				break;
-			}
-			interpreted.innerHTML += line;
+			else if(setSpeed) {
+				speed = parseInt(line);
+				setSpeed = false;
+				isDisplayed = true;
+			} else
+				interpreted.innerHTML += line;
+			
 			break;
 	}
 
 }
 
+var speed = 100;
 function iterate() {
 	if (index < contents.length-1) {
-		timer = setTimeout(looper.bind(null), 40);
+		timer = setTimeout(looper.bind(null), speed);
 		index++;
 	}
 }
 
-/* getLine: handles getting a line */
-function getLine(index, str) {
+function cssStart() {
+	displayed.style.color = "red";
 
+
+
+	console.log("style START");
+	cssBuffer += line;
+	isCSS = true;
+}
+
+function cssStop() {
+	displayed.style.color = "#00FF00";
+
+	console.log("style FIN");
+	cssBuffer += line; 
+	interpreted.innerHTML += cssBuffer;
+
+	cssBuffer = "";
+	isCSS = false;
 }
 
 
@@ -112,6 +137,7 @@ function getFileContents(file, callback) {
 	});
 }
 
+// START
 getFileContents(file, 
 	function(result) {
 		contents = result;
