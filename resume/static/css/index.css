@@ -30,6 +30,21 @@ body {
 }
 
 
+#wrapper {
+	margin-left: 200px;
+}
+
+#display-content {
+	float: left;
+	width: 100%;
+}
+
+#interpreted-content {
+	float: right; 
+	width: 100%;
+}
+
+
 /* auto type class */
 .auto-type {
 	color: #00FF00;

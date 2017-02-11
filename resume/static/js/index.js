@@ -3,4 +3,4 @@
 
 **/
 
-writeOut("/static/auto-scroll/main.txt", document.getElementById("main"));
+//writeOut("/static/auto-scroll/main.txt", document.getElementById("main"));
