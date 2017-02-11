@@ -29,7 +29,7 @@ function looper() {
 
 	switch (c) {
 		case '\n':
-			displayed.innerHTML += "<br>";
+			if (isDisplayed) displayed.innerHTML += "<br>";
 			if (isInterpreted) interpret();
 			isInterpreted = true;
 
@@ -149,9 +149,25 @@ function getFileContents(file, callback) {
 	});
 }
 
-// START
-getFileContents(file, 
-	function(result) {
-		contents = result;
-		looper();
-	});
+function cursorAnimation() {
+    $('#cursor').animate({
+        opacity: 0
+    }, 'fast', 'swing').animate({
+        opacity: 1
+    }, 'fast', 'swing');
+}
+
+
+$(document).ready(function() {
+
+	setInterval ('cursorAnimation()', 600);
+
+	// START
+	getFileContents(file, 
+		function(result) {
+			contents = result;
+			looper();
+		});
+
+});
+

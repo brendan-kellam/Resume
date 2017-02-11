@@ -35,7 +35,12 @@ body {
 }
 
 #display-content {
+	display: inline;
 	color: #00FF00;	
+}
+
+#cursor {
+	color: #00FF00;
 }
 
 
