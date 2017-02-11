@@ -11,6 +11,7 @@ var index = 0;
 
 var timer;
 var line = "";
+var pause = 200;
 var isInterpreted = true;
 var isDisplayed = false;
 
@@ -42,6 +43,7 @@ function looper() {
 			iterate();
 			return;
 
+		// not interpreted
 		case '~':
 			isInterpreted = false;
 			iterate();
@@ -53,6 +55,11 @@ function looper() {
 			isDisplayed = false;
 			iterate();
 			return;
+
+		case '˚':
+			iterate(pause);
+			return;
+
 
 		default:
 			break;
@@ -80,9 +87,7 @@ function interpret() {
 			if (isCSS) 
 				cssBuffer += line;
 			else if(setSpeed) {
-				speed = parseInt(line);
-				setSpeed = false;
-				isDisplayed = true;
+				speedSet();
 			} else
 				interpreted.innerHTML += line;
 			
@@ -92,9 +97,13 @@ function interpret() {
 }
 
 var speed = 100;
-function iterate() {
+function iterate(time) {
+
+	// if time is not set, use speed
+	var rate = (time == null) ? speed : time;
+
 	if (index < contents.length-1) {
-		timer = setTimeout(looper.bind(null), speed);
+		timer = setTimeout(looper.bind(null), rate);
 		index++;
 	}
 }
@@ -103,8 +112,6 @@ function cssStart() {
 	displayed.style.color = "red";
 
 
-
-	console.log("style START");
 	cssBuffer += line;
 	isCSS = true;
 }
@@ -112,12 +119,17 @@ function cssStart() {
 function cssStop() {
 	displayed.style.color = "#00FF00";
 
-	console.log("style FIN");
 	cssBuffer += line; 
 	interpreted.innerHTML += cssBuffer;
 
 	cssBuffer = "";
 	isCSS = false;
+}
+
+function speedSet() {
+	speed = parseInt(line);
+	setSpeed = false;
+	isDisplayed = true;
 }
 
 
